@@ -1,5 +1,12 @@
 <template>
   <div class="app">
-    app
+    <router-view/>
   </div>
 </template>
+
+<script>
+export default {}
+</script>
+
+<style lang="scss">
+</style>
