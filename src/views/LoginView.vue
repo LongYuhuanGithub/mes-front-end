@@ -1,14 +1,14 @@
 <template>
   <div class="login-view">
     <h2>登录</h2>
-    <p><a>手机号登录</a><a>账号登录</a></p>
+    
   </div>
 </template>
 
 <script>
 export default {}
 </script>
-
+  
 <style lang="scss" scoped>
   .login-view{
     position: absolute;
