@@ -43,16 +43,17 @@ export default {
     }
   },
   methods: {
-    send() {
+    async send() {
       let url = '/api/loginphone'
       let user = { phone: this.phone, password: this.password }
       if (!this.isDisplay) {
         url = '/api/login'
         user = { username: this.phone, password: this.password }
       }
-      this.$http.post(url, user).then(({ data }) => {
-        console.log(data)
-      })
+      const { data } = await this.$http.post(url, user)
+      if (data.status !== 200) return alert(data.message)
+      sessionStorage.setItem('mes_front_end_token', data.token)
+      await this.$router.push('/home/welcome')
     }
   }
 }
@@ -133,5 +134,4 @@ export default {
       font-weight: 700;
     }
   }
-
 </style>

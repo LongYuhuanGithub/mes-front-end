@@ -36,11 +36,10 @@ export default {
     }
   },
   methods: {
-    send() {
-      this.$http.post('/api/register', this.user).then(({ data }) => {
-        console.log(data)
-        this.$router.push('login')
-      })
+    async send() {
+      const { data } = await this.$http.post('/api/register', this.user)
+      if (data.status !== 200) return alert(data.message)
+      await this.$router.push('/login')
     }
   }
 }
