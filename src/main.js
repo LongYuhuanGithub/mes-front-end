@@ -1,3 +1,4 @@
+import '@/assets/iconfont/iconfont.css' // 导入图标库
 import 'normalize.css' // 样式标准
 import '@/assets/css/base.css' // 基本样式
 import Vue from 'vue'
