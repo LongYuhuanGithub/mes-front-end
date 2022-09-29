@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import LoginView from '@/views/LoginView'
-import RegisterView from '@/views/RegisterView'
-import HomeView from '@/views/HomeView'
-import WelcomeView from '@/views/WelcomeView'
-import UsersView from '@/views/UsersView'
-import RolesView from '@/views/RolesView.vue'
-import ResetPasswordView from '@/views/ResetPasswordView.vue'
+import LoginView from '@/views/login-register/LoginView'
+import RegisterView from '@/views/login-register/RegisterView'
+import HomeView from '@/views/layout/HomeView'
+import WelcomeView from '@/views/layout/WelcomeView'
+import UsersView from '@/views/users/UsersView'
+import RolesView from '@/views/roles/RolesView.vue'
+import ResetPasswordView from '@/views/login-register/ResetPasswordView.vue'
 
 Vue.use(VueRouter)
 
