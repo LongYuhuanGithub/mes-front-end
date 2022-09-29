@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import MyAside from '../components/MyAside.vue'
+import MyAside from '../../components/layout/MyAside.vue'
 export default {
   components: { MyAside }
 }
