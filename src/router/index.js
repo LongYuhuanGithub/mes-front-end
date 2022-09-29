@@ -5,6 +5,8 @@ import RegisterView from '@/views/RegisterView'
 import HomeView from '@/views/HomeView'
 import WelcomeView from '@/views/WelcomeView'
 import UsersView from '@/views/UsersView'
+import RolesView from '@/views/RolesView.vue'
+import ResetPasswordView from '@/views/ResetPasswordView.vue'
 
 Vue.use(VueRouter)
 
@@ -22,6 +24,10 @@ const routes = [
     component: RegisterView
   },
   {
+    path: '/resetPwd',
+    component: ResetPasswordView
+  },
+  {
     path: '/home',
     component: HomeView,
     redirect: '/home/welcome',
@@ -33,6 +39,10 @@ const routes = [
       {
         path: 'users',
         component: UsersView
+      },
+      {
+        path: 'roles',
+        component: RolesView
       }
     ]
   }
@@ -44,7 +54,10 @@ const router = new VueRouter({
 
 // 路由守卫，必须要登录才能访问 /login 之外的路由
 router.beforeEach((to, from, next) => {
-  if (to.path === '/login' || to.path === '/register') return next() // 访问的是登录页面，放行
+  if (to.path === '/login' ||
+      to.path === '/register' ||
+      to.path === '/resetPwd' ||
+      to.path.includes('/api/')) return next() // 放行
   if (!sessionStorage.getItem('mes_front_end_token')) return next('/login') // 没有登录，跳转到登录页面
   next()
 })

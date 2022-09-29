@@ -7,14 +7,22 @@
     </header>
     <section>
       <!-- 主体内容 -->
-      <div class="main">main</div>
+      <div class="main">
+        <router-view></router-view>
+      </div>
       <!-- 左侧导航区域 -->
-      <aside>左侧导航</aside>
+      <aside>
+        <MyAside></MyAside>
+      </aside>
     </section>
   </div>
 </template>
 
 <script>
+import MyAside from '../components/MyAside.vue'
+export default {
+  components: { MyAside }
+}
 </script>
 
 <style lang="scss" scoped>

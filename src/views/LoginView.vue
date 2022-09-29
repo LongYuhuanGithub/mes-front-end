@@ -26,6 +26,7 @@
           </div>
         </div>
         <div class="skip">
+          <router-link to="/resetPwd">忘记密码</router-link> |
           <router-link to="/register">注册</router-link>
         </div>
       </div>
@@ -63,7 +64,7 @@ export default {
   .login-view{
     width: 100%;
     height: 100vh;
-    background-image: url(@/assets/bg.png);
+    background-image: url(@/assets/images/bg.png);
     .x-title{
       width: 280px;
       height: 70px;
@@ -71,7 +72,7 @@ export default {
       top: 5px;
       left: -30px;
       transform: scale(.55);
-      background: url(@/assets/web-logo.svg) no-repeat
+      background: url(@/assets/images/web-logo.svg) no-repeat
     }
     .login{
       position: absolute;

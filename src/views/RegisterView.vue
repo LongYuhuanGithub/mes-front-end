@@ -31,7 +31,7 @@ export default {
         password: '',
         phone: '',
         email: '',
-        gender: 0
+        gender: '0'
       }
     }
   },
@@ -49,7 +49,7 @@ export default {
   .register-view{
     width: 100%;
     height: 100vh;
-    background-image: url(@/assets/bg.png);
+    background-image: url(@/assets/images/bg.png);
   }
   .register{
     position: absolute;
