@@ -3,19 +3,28 @@
     <div class="register">
       <div class="register-title">注册小工单</div>
       <div class="reg-form">
-        <input type="text" name="username" v-model="user.username" placeholder="用户名："><br>
-        <input type="password" name="password" v-model="user.password" placeholder="密码："><br>
-        <input type="email" name="email" v-model="user.email" placeholder="邮箱："><br>
-        <input type="text" name="phone" v-model="user.phone" placeholder="手机号："><br>
+        <div>
+          <input type="text" name="username" v-model="user.username" placeholder="用户名：">
+        </div>
+        <div>
+          <input type="password" name="password" v-model="user.password" placeholder="密码：">
+        </div>
+        <div>
+          <input type="email" name="email" v-model="user.email" placeholder="邮箱：">
+        </div>
+        <div>
+          <input type="text" name="phone" v-model="user.phone" placeholder="手机号：">
+        </div>
         <div class="gender">
           性别：<input type="radio" name="gender" value="0" v-model="user.gender" checked>男
           <input type="radio" name="gender" value="1" v-model="user.gender">女
           <input type="radio" name="gender" value="2" v-model="user.gender">未知
         </div>
-        <button @click="send">注册</button><br>
-        <div class="ipt-checkbox"><input type="checkbox" checked><span>保持注册</span></div>
-        <div class="skip">
-          <router-link to="/login">返回</router-link>
+        <div>
+          <button @click="send">注册</button>
+          <button>
+            <router-link to="/login">返回</router-link>
+          </button>
         </div>
       </div>
     </div>
@@ -82,27 +91,20 @@ export default {
       }
       button{
         margin: 30px 0 10px 0;
-        width: 250px;
+        width: 80px;
         padding: 10px 10px;
         background-color: #1890FF;
         color: white;
-      }
-      .ipt-checkbox{
-        position: absolute;
-        left: 74px;
-        height: 40px;
-        line-height: 40px;
-        span{
-          padding: 0 8px;
+        &:first-child{
+          margin-right: 10px;
+        }
+        &:last-child a{
+          color: white;
         }
       }
     }
     .skip{
-      position: absolute;
-      right: 76px;
-      bottom: 45px;
-      font-size: 14px;
-      font-weight: 700;
+
     }
   }
 </style>

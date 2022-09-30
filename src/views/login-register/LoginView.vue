@@ -21,9 +21,9 @@
           <div>
             <button @click="send">登录</button>
           </div>
-          <div class="ipt-checkbox">
+          <!-- <div class="ipt-checkbox">
             <input type="checkbox" checked><span>保持登录</span>
-          </div>
+          </div> -->
         </div>
         <div class="skip">
           <router-link to="/resetPwd">忘记密码</router-link> |
@@ -54,6 +54,7 @@ export default {
       const { data } = await this.$http.post(url, user)
       if (data.status !== 200) return alert(data.message)
       sessionStorage.setItem('mes_front_end_token', data.token)
+      sessionStorage.setItem('mes_front_end_userinfo', data.data)
       await this.$router.push('/home/welcome')
     }
   }
@@ -113,15 +114,15 @@ export default {
           background-color: #1890FF;
           color: white;
         }
-        .ipt-checkbox{
-          position: absolute;
-          left: 74px;
-          height: 40px;
-          line-height: 40px;
-          span{
-            padding: 0 8px;
-          }
-        }
+        // .ipt-checkbox{
+        //   position: absolute;
+        //   left: 74px;
+        //   height: 40px;
+        //   line-height: 40px;
+        //   span{
+        //     padding: 0 8px;
+        //   }
+        // }
       }
       .color{
         color: skyblue;
