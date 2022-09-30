@@ -1,5 +1,5 @@
 <template>
-  <div class="forgetpwd-view">
+  <div class="reset-password-view">
     <div class="forgetpwd">
       <div class="forgetpwd-title"><span>重置密码</span></div>
       <div class="forgetpwd-content">
@@ -58,10 +58,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .forgetpwd-view{
+  .reset-password-view{
     width: 100%;
-    height: 100vh;
-    background-image: url(@/assets/images/bg.png);
+    height: 100%;
+    background: url(@/assets/images/bg.png) no-repeat center / 100% 100%;
     .forgetpwd{
       position: absolute;
       top:50%;

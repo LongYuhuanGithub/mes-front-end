@@ -57,8 +57,8 @@ export default {
 <style lang="scss" scoped>
   .register-view{
     width: 100%;
-    height: 100vh;
-    background-image: url(@/assets/images/bg.png);
+    height: 100%;
+    background: url(@/assets/images/bg.png) no-repeat center / 100% 100%;
   }
   .register{
     position: absolute;

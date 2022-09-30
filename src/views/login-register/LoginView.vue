@@ -65,7 +65,7 @@ export default {
   .login-view{
     width: 100%;
     height: 100vh;
-    background-image: url(@/assets/images/bg.png);
+    background: url(@/assets/images/bg.png) no-repeat center / 100% 100%;
     .x-title{
       width: 280px;
       height: 70px;
