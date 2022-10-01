@@ -39,7 +39,7 @@
         <table>
           <thead class="table-header">
             <tr>
-              <th><input type="checkbox"></th>
+              <th><input type="checkbox" class="all" ></th>
               <th>登录名称</th>
               <th>用户名称</th>
               <th>部门</th>
@@ -53,7 +53,8 @@
           <tbody class="table-tbody">
             <tr v-for="users in userslist" :key="users.id">
               <!-- {{users}} -->
-              <td><input type="checkbox" :value="users.id"></td>
+              {{checklist}}
+              <td><input type="checkbox" :value="users.id" ref="checkbox" class="checkbox" @click="checkbox"></td>
               <td>{{users.username}}</td>
               <td>{{users.username}}</td>
               <td>{{users.dept}}</td>
@@ -106,10 +107,39 @@ export default {
         size: 10, // 一页显示几条
         total: 100 // 总共多少条数据
       },
-      updatelist: []// 要修改id的用户列表
+      updatelist: [], // 要修改id的用户列表
+      checklist: [], // 选中列表
+      isChecked: false// 全选是否选中
+    }
+  },
+  watch: {
+    // 判断全选是否选中
+    checklist(newVal, oldVal) {
+      if (this.checklist.length === this.userslist.length) {
+        document.querySelector('.all').checked = true
+      } else {
+        document.querySelector('.all').checked = false
+      }
+    },
+    isChecked(newVal, oldVal) {
+      console.log(newVal, oldVal)
+      console.log(this.$refs)
     }
   },
   methods: {
+    // 判断用户是否选中
+    checkbox(e) {
+      if (e.target.checked) {
+        this.checklist.push(e.target._value)
+      } else {
+        const index = this.checklist.indexOf(e.target._value)
+        this.checklist.splice(index, 1)
+      }
+    },
+    // 全选
+    all() {
+
+    },
     // 增加列表显示
     userAddShow() {
       // 遮罩层
