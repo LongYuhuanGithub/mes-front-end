@@ -4,15 +4,41 @@
       <p>确认要删除吗？</p>
     </div>
     <div>
-      <button>确认</button>
-      <button>返回</button>
+      <button @click="userRemoveSend">确认</button>
+      <button @click="userRemoveHide">返回</button>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  props: ['id'],
+  methods: {
+    // 删除列表隐藏
+    userRemoveHide() {
+      // 遮罩层
+      const mask = document.querySelector('.mask-layer')
+      // 用户增加列表
+      const userremove = document.querySelector('.user-remove')
+      mask.style.display = 'none'
+      userremove.style.display = 'none'
+    },
+    // 删除
+    async userRemoveSend() {
+      const id = this.id
+      const { data: res } = await this.$http.delete('/users/' + id)
+      if (res.status !== 200) return alert(res.message)
 
+      // 遮罩层
+      const mask = document.querySelector('.mask-layer')
+      // 用户增加列表
+      const userremove = document.querySelector('.user-remove')
+      mask.style.display = 'none'
+      userremove.style.display = 'none'
+      this.$router.push('/home/users')
+      location.reload()
+    }
+  }
 }
 </script>
 

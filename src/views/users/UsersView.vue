@@ -44,6 +44,7 @@
               <th>用户名称</th>
               <th>部门</th>
               <th>手机</th>
+              <th>备注</th>
               <th>用户状态</th>
               <th>创建时间</th>
               <th>操作</th>
@@ -57,23 +58,34 @@
               <td>{{users.username}}</td>
               <td>{{users.dept}}</td>
               <td>{{users.phone}}</td>
+              <td>{{users.remark}}</td>
               <td>{{users.status === '0' ? '正常':'停用'}}</td>
               <td>{{users.create_time}}</td>
               <td>
-                <button><i class="iconfont icon-edit-square"></i>编辑</button>
+                <button @click="userUpdateShow(users.id)"><i class="iconfont icon-edit-square"></i>编辑</button>
                 <button @click="userRemoveShow(users.id)"><i class="iconfont icon-close"></i>删除</button>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
+      <!-- 分页 -->
+      <div class="paging">
+        <p>
+          <span>当前页：{{this.pagination.current}}</span>
+          <span>显示条数：{{this.pagination.size}}</span>
+          <span>总条数：{{this.pagination.total}}</span>
+        </p>
+      </div>
     </div>
+
     <!-- 模态框 -->
     <div class="modal-box">
       <!-- 遮罩层 -->
       <div class="mask-layer" style="display:none">
         <UserAddView></UserAddView>
-        <UserRemoveView></UserRemoveView>
+        <UserRemoveView :id="id"></UserRemoveView>
+        <UserUpdateView :updatelist="updatelist"></UserUpdateView>
       </div>
     </div>
   </div>
@@ -82,11 +94,19 @@
 <script>
 import UserAddView from './UsersAddView.vue'
 import UserRemoveView from './UserRemoveView.vue'
+import UserUpdateView from './UserUpdateView.vue'
 export default {
   data() {
     return {
-      state: "['0','1']",
-      userslist: []
+      state: "['0','1']", // 用户状态
+      userslist: [], // 获取到的用户列表
+      id: 1, // 删除或修改要传过去的数据
+      pagination: { // 分页导航
+        current: 1, // 当前页数
+        size: 10, // 一页显示几条
+        total: 100 // 总共多少条数据
+      },
+      updatelist: []// 要修改id的用户列表
     }
   },
   methods: {
@@ -100,7 +120,8 @@ export default {
       useradd.style.display = 'block'
     },
     // 删除列表显示
-    userRemoveShow() {
+    userRemoveShow(id) {
+      this.id = id
       // 遮罩层
       const mask = document.querySelector('.mask-layer')
       // 用户增加列表
@@ -108,21 +129,29 @@ export default {
       mask.style.display = 'block'
       userremove.style.display = 'block'
     },
-    // 修改
-    userUpdate() {
+    // 修改列表显示
+    async userUpdateShow(id) {
+      // 获取要修改的用户
+      const { data: res } = await this.$http.get('/users/' + id)
+      console.log(res)
+      if (res.status !== 200) return alert(res.message)
+      this.updatelist = res.data
 
+      // 遮罩层
+      const mask = document.querySelector('.mask-layer')
+      // 用户增加列表
+      const userupdate = document.querySelector('.user-update-view')
+      mask.style.display = 'block'
+      userupdate.style.display = 'block'
     }
   },
   components: {
-    UserAddView,
-    UserRemoveView
+    UserAddView, // 用户增加模块
+    UserRemoveView, // 用户删除模块
+    UserUpdateView// 用户修改模块
   },
   async created() {
-    const token = sessionStorage.getItem('mes_front_end_token')
-    console.log(token)
-    const url = '/users'
-
-    const { data: res } = await this.$http.get(url, token)
+    const { data: res } = await this.$http.get('/users', { params: this.pagination })
     if (res.status !== 200) return alert(res.message)
     this.userslist = res.data
     console.log(res.data)
@@ -264,9 +293,13 @@ export default {
             width: 150px;
           }
           &:nth-child(7){
-            width: 200px;
+            // width: 100px;
           }
           &:nth-child(8){
+            text-align: center;
+            width: 250px;
+          }
+          &:nth-child(9){
             text-align: center;
             width: 250px;
           }
@@ -322,6 +355,15 @@ export default {
       }
     }
 
+  }
+
+  // 分页
+  .paging{
+    text-align: left;
+    font-size: 14px;
+    span{
+      margin-right: 10px;
+    }
   }
 
   // 模态框

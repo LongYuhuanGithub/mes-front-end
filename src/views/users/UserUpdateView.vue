@@ -1,21 +1,19 @@
 <template>
-  <div class="user-add" style="display:none">
-    <div class="add-title">
-      <p>用户增加</p>
+  <div class="user-update-view" style="display:none">
+    <div class="update-title">
+      <p>用户修改</p>
     </div>
+    {{this.updatelist}}
     <hr/>
-    <div class="add-content">
+    <div class="update-content">
       <div>
-        <label for="">用户名称：</label><input type="text" name="username" v-model="username" placeholder="请输入用户名称">
+        <label for="">ID：</label><input type="text" name="id"  v-model="id" :placeholder="this.updatelist.id">
       </div>
       <div>
-        <label for="">密码：</label><input type="password" name="password" v-model="password" placeholder="请输入密码">
+        <label for="">手机号码：</label><input type="tel" name="phone" v-model="phone" :placeholder="this.updatelist.phone">
       </div>
       <div>
-        <label for="">手机号码：</label><input type="tel" name="phone" v-model="phone" placeholder="请输入手机号码">
-      </div>
-      <div>
-        <label for="">邮箱：</label><input type="email" name="email" v-model="email" placeholder="请输入邮箱">
+        <label for="">邮箱：</label><input type="email" name="email" v-model="email" :placeholder="this.updatelist.email">
       </div>
       <div>
         <label for="">性别：</label>
@@ -24,17 +22,14 @@
         <input type="radio" name="gender" v-model="gender" value="2">  未知
       </div>
       <div>
-        <label for="">备注：</label><input type="text" name="remark" v-model="remark" placeholder="请输入备注">
+        <label for="">备注：</label><input type="text" name="remark" v-model="remark" :placeholder="this.updatelist.remark">
       </div>
       <div>
-        <label for="">创建者名：</label><input type="text" name="create_by" v-model="create_by" placeholder="请输入创建者的用户名">
+        <label for="">角色ID：</label><input type="text" name="roleIds" v-model="roleIds" placeholder="请输入角色ID">
       </div>
-      <div>
-        <label for="">角色ID</label><input type="text" name="role_id" v-model="roleIds" placeholder="请输入角色ID">
-      </div>
-      <div class="add-btn">
-        <button @click="userAddSend">确认</button>
-        <button @click="userAddHide">返回</button>
+      <div class="update-btn">
+        <button @click="userUpdateSend">确认</button>
+        <button @click="userUpdateHide">返回</button>
       </div>
     </div>
   </div>
@@ -44,48 +39,44 @@
 export default {
   data() {
     return {
-      username: '', // 用户名称
-      password: '', // 密码
+      id: this.updatelist.id, // 用户ID
       email: '', // 邮箱
       phone: '', // 手机
-      gender: '1', // 性别
-      create_by: '', // 创建者的用户名
+      gender: '', // 性别
       remark: '', // 备注
-      roleIds: ['1'] // 角色ID
+      roleIds: ['1']// 角色ID的数组
     }
   },
+  props: ['updatelist'],
   methods: {
     // 增加列表隐藏
-    userAddHide() {
+    userUpdateHide() {
       // 遮罩层
       const mask = document.querySelector('.mask-layer')
       // 用户增加列表
-      const useradd = document.querySelector('.user-add')
+      const userupdate = document.querySelector('.user-update-view')
       mask.style.display = 'none'
-      useradd.style.display = 'none'
+      userupdate.style.display = 'none'
     },
-    // 增加
-    async userAddSend() {
-      const url = '/users'
+    // 修改
+    async userUpdateSend() {
       const user = {
-        username: this.username,
-        password: this.password,
+        id: this.id,
         email: this.email,
         phone: this.phone,
         gender: this.gender,
-        create_by: this.create_by,
         remark: this.remark,
         roleIds: this.roleIds
       }
-      const { data } = await this.$http.post(url, user)
-      if (data.status !== 200) return alert(data.message)
+      const { data: res } = await this.$http.put('users', user)
+      if (res.status !== 200) return alert(res.message)
 
       // 遮罩层
       const mask = document.querySelector('.mask-layer')
       // 用户增加列表
-      const useradd = document.querySelector('.user-add')
+      const userupdate = document.querySelector('.user-update-view')
       mask.style.display = 'none'
-      useradd.style.display = 'none'
+      userupdate.style.display = 'none'
       this.$router.push('/home/users')
       location.reload()
     }
@@ -94,7 +85,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .user-add{
+  .user-update-view{
     position: absolute;
     top: 50%;
     left: 50%;
@@ -104,12 +95,12 @@ export default {
     height: 350px;
     padding: 10px;
     border: 1px solid #ccc;
-    .add-title{
+    .update-title{
       font-size: 20px;
       text-align: left;
       padding: 10px 0 10px 20px;
     }
-    .add-content{
+    .update-content{
       display: flex;
       flex-wrap: wrap;
       padding: 20px;
@@ -132,7 +123,7 @@ export default {
           margin-left: 25px;
         }
       }
-      .add-btn{
+      .update-btn{
         display: flex;
         justify-content: space-evenly;
         width: 100%;
