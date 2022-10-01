@@ -95,15 +95,7 @@ export default {
 
       div {
         input {
-          border-radius: 5px;
           margin: 10px 0;
-          padding: 10px;
-          width: 100%;
-          transition: all .3s;
-
-          &:focus {
-            box-shadow: 0 0 3px 3px #22c78d;
-          }
         }
       }
 
@@ -111,13 +103,13 @@ export default {
         input {
           border-top-right-radius: 0;
           border-bottom-right-radius: 0;
-          width: 68%;
+          width: 64%;
         }
 
         button {
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;
-          width: 32%;
+          width: 36%;
         }
       }
 
@@ -127,13 +119,10 @@ export default {
       }
 
       button {
-        border-radius: 5px;
         margin: 10px 0;
-        padding: 10px;
         width: 46%;
         background-color: #1890FF;
         color: white;
-        transition: all .5s;
 
         &:hover {
           background-color: #47a7ff;

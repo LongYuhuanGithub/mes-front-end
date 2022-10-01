@@ -1,58 +1,97 @@
 <template>
-  <div class="aside-view">
-    <ul class="catalog-li">
-      <li><router-link to="/home/welcome">首页</router-link></li>
-      <li>
-        系统管理
-        <ul class="menus-li" @click="hide">
-          <li><router-link to="/home/users">用户管理</router-link></li>
-          <li><router-link to="/home/roles">角色管理</router-link></li>
-          <!-- <li><router-link to="/home/menus">菜单管理</router-link></li>
-          <li><router-link to="/home/departments">部门管理</router-link></li>
-          <li><router-link to="/home/positions">岗位管理</router-link></li>
-          <li><router-link to="/home/dictionaries">字典管理</router-link></li>
-          <li><router-link to="/home/parameters">参数设置</router-link></li>
-          <li><router-link to="/home/notifications">通知公告</router-link></li>
-          <li><router-link to="/home/logs">日志管理</router-link></li> -->
+  <div class="my-aside">
+    <!-- 目录 -->
+    <ul>
+      <li v-for="item in menuList" :key="item.id" @click.stop="triggerMenu(item.id)">
+        <i :class="['iconfont', item.icon]"></i>
+        <span>{{ item.menu_name }}</span>
+        <i :class="['iconfont', 'icon-right', 'arrows', item.id === showId ? 'down' : '']"></i>
+        <!-- 菜单 -->
+        <ul :class="['menu', item.id === showId ? 'current' : '']">
+          <li v-for="item2 in item.children" :key="item2.id" @click.stop="$router.push(item2.url)">
+            <i :class="['iconfont', item2.icon]"></i>
+            <span>{{ item2.menu_name }}</span>
+          </li>
         </ul>
       </li>
-      <li>系统监控</li>
     </ul>
   </div>
 </template>
 
 <script>
 export default {
+  async created() {
+    const { data } = await this.$http.get('/menus')
+    if (data.status !== 200) return alert(data.message)
+    this.menuList = data.data
+  },
+  data() {
+    return {
+      menuList: [], // 菜单列表
+      showId: 0 // 当前展开的目录ID
+    }
+  },
   methods: {
-    hide() {
-
+    // 切换菜单展开与关闭
+    triggerMenu(id) {
+      if (this.showId === id) this.showId = 0
+      else this.showId = id
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .catalog-li{
-    font-size: 16px;
+.my-aside {
+  height: 100%;
+
+  // 目录
+  ul {
+    height: 100%;
     text-align: left;
-    padding: 10px 0;
-    a{
-      display: block;
-      width: 200px;
-      text-align: left;
-      padding: 10px 20px;
-      &:hover{
-        background-color: orange;
+
+    li {
+      width: 100%;
+      min-height: 40px;
+      line-height: 40px;
+      text-indent: 15px;
+
+      .arrows {
+        float: right;
+        margin-right: 10px;
+        transform-origin: 24px center;
+        transition: all .3s;
+
+        &.down {
+          transform: rotate(90deg);
+        }
       }
-    }
-    .menus-li a{
-      display: block;
-      width: 200px;
-      text-align: left;
-      padding: 10px 20px;
-      &:hover{
-        background-color: orange;
+
+      // 菜单
+      .menu {
+        opacity: 0;
+        height: 0;
+        overflow: hidden;
+        transition: all .5s;
+
+        &.current {
+          opacity: 1;
+          height: auto;
+        }
+
+        li {
+          text-indent: 30px;
+
+          &:hover {
+            background-color: #2c313a;
+          }
+        }
       }
     }
   }
+
+  .iconfont {
+    margin-right: 5px;
+  }
+}
 </style>

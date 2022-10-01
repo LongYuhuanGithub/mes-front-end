@@ -79,7 +79,7 @@ export default {
     border-radius: 20px;
     padding: 40px 70px;
     width: 400px;
-    height: 420px;
+    height: 450px;
     background-color: rgba(0, 0, 0, 0.6);
     transform: translate(-50%, -50%);
 
@@ -95,19 +95,12 @@ export default {
       margin-top: 10px;
 
       [type=text], [type=password], [type=email] {
-        border-radius: 5px;
         margin: 10px 0;
-        padding: 10px;
-        width: 100%;
-        transition: all .3s;
-
-        &:focus {
-          box-shadow: 0 0 3px 3px #22c78d;
-        }
       }
 
       .gender {
         display: flex;
+        margin: 10px 0;
         color: #eee;
 
         label {
@@ -122,13 +115,10 @@ export default {
         justify-content: space-between;
 
         button {
-          border-radius: 5px;
-          margin: 10px 0;
           padding: 10px;
           width: 46%;
           background-color: #1890FF;
           color: white;
-          transition: all .5s;
 
           &:hover {
             background-color: #47a7ff;

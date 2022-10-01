@@ -129,25 +129,14 @@ export default {
         text-align: center;
 
         input {
-          border-radius: 5px;
           margin: 10px 0;
-          padding: 10px;
-          width: 100%;
-          transition: all .3s;
-
-          &:focus {
-            box-shadow: 0 0 3px 3px #22c78d;
-          }
         }
 
         button {
-          border-radius: 5px;
           margin: 10px 0;
-          padding: 10px;
           width: 100%;
           background-color: #1890FF;
           color: white;
-          transition: all .5s;
 
           &:hover {
             background-color: #47a7ff;
