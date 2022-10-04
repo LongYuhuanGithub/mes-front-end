@@ -73,6 +73,7 @@ export default {
       min-height: 40px;
       line-height: 40px;
       text-indent: 15px;
+      cursor: pointer;
 
       .arrows {
         float: right;
@@ -99,6 +100,7 @@ export default {
 
         li {
           text-indent: 30px;
+          cursor: pointer;
 
           &.current {
             color: #409eff;
