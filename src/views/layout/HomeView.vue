@@ -1,6 +1,5 @@
 <template>
   <div class="home-view">
-    <MyMessage message="skdgnspdijfd"></MyMessage>
     <!-- 头部 -->
     <header>
       <img src="@/assets/images/logo.png" alt="">
@@ -9,9 +8,9 @@
     </header>
     <section>
       <!-- 主体内容 -->
-      <div class="main scroll-bar">
+      <main class="scroll-bar">
         <router-view></router-view>
-      </div>
+      </main>
       <!-- 左侧导航区域 -->
       <aside class="scroll-bar">
         <MyAside></MyAside>
@@ -22,7 +21,6 @@
 
 <script>
 import MyAside from '@/components/layout/MyAside'
-import MyMessage from '@/components/global/MyMessage'
 
 export default {
   methods: {
@@ -33,16 +31,13 @@ export default {
     }
   },
   components: {
-    MyAside,
-    MyMessage
+    MyAside
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .home-view {
-  text-align: center;
-
   // 头部
   header {
     display: flex;
@@ -73,10 +68,11 @@ export default {
     height: 100%;
 
     // 主体内容
-    .main {
+    main {
       flex: 1;
+      padding: 10px;
       height: 100%;
-      background-color: #969696;
+      background-color: #ccc;
     }
 
     // 左侧导航区域

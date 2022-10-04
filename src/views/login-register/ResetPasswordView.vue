@@ -58,7 +58,8 @@ export default {
         newPassword: this.newPassword,
         affirmPassword: this.affirmPassword
       })
-      if (data.status !== 200) return alert(data.message)
+      if (data.status !== 200) return this.$message('重置失败')
+      this.$message('重置成功', 'success')
       await this.$router.push('/login')
     }
   }

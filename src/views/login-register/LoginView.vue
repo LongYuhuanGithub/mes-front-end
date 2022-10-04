@@ -73,9 +73,10 @@ export default {
         }
       }
       const { data } = await this.$http.post(url, user)
-      if (data.status !== 200) return alert(data.message)
+      if (data.status !== 200) return this.$message('登录失败')
       sessionStorage.setItem('mes_front_end_token', data.token)
-      sessionStorage.setItem('mes_front_end_userinfo', data.data)
+      sessionStorage.setItem('mes_front_end_userinfo', JSON.stringify(data.data))
+      this.$message('登录成功', 'success')
       await this.$router.push('/home/welcome')
     }
   }

@@ -7,6 +7,7 @@ import axios from 'axios'
 import App from '@/App.vue'
 import router from '@/router'
 import store from '@/store'
+import MyMessage from '@/components/global/MyMessage'
 
 axios.defaults.baseURL = 'http://localhost:3000' // 基本路径
 axios.interceptors.request.use(config => { // 请求拦截
@@ -16,7 +17,14 @@ axios.interceptors.request.use(config => { // 请求拦截
 
 Vue.config.productionTip = false
 
+Vue.component('MyMessage', MyMessage)
+
 Vue.prototype.$http = axios
+Vue.prototype.$message = (message, type = 'error') => { // 将消息提示组件添加到 body
+  const MyMessageConstructor = Vue.extend(MyMessage)
+  const myMessageInstance = new MyMessageConstructor({ propsData: { message, type } }).$mount()
+  document.body.append(myMessageInstance.$el)
+}
 
 new Vue({
   router,

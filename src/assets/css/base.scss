@@ -40,6 +40,7 @@ a {
 
 // 输入框和按钮样式
 input,
+select,
 textarea,
 button {
   border: none;
@@ -59,10 +60,15 @@ input[type="color"],
 textarea {
   width: 100%;
 
-  // 输入框获得焦点后的样式
+  // 获得焦点后的样式
   &:focus {
     box-shadow: 0 0 5px 5px rgba(34, 199, 141, .6);
   }
+}
+
+// 选择框获得焦点后的样式
+select:focus {
+  box-shadow: 0 0 5px 5px rgba(34, 199, 141, .6);
 }
 
 // 鼠标经过 button 按钮时，鼠标变成小手

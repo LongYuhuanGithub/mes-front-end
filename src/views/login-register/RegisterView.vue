@@ -60,7 +60,8 @@ export default {
     // 提交注册
     async send() {
       const { data } = await this.$http.post('/api/register', this.user)
-      if (data.status !== 200) return alert(data.message)
+      if (data.status !== 200) return this.$message('注册失败')
+      this.$message('注册成功', 'success')
       await this.$router.push('/login')
     }
   }
@@ -133,10 +134,6 @@ export default {
           }
         }
       }
-    }
-
-    .skip {
-
     }
   }
 
