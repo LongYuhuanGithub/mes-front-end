@@ -1,7 +1,7 @@
 <template>
   <div class="users-view">
     <!-- 面包屑导航 -->
-    <div class="breadcrumb">
+    <div class="card breadcrumb">
       <span @click="jumpTo('/home/welcome')"><a href="javascript:void(0)">首页</a></span>
       <i class="iconfont icon-right"></i>
       <span>系统管理</span>
@@ -10,7 +10,7 @@
     </div>
 
     <!-- 头部搜索区域 -->
-    <header>
+    <header class="card">
       <div>
         用户名称：<input type="text" v-model="user.username" @keyup.enter="getUserList">
       </div>
@@ -32,7 +32,7 @@
     </header>
 
     <!-- 内容区域 -->
-    <section>
+    <section class="card">
       <!-- 按钮 -->
       <div class="btn-box">
         <div class="left">
@@ -105,10 +105,10 @@
     <!-- 遮罩层 -->
     <transition>
       <div class="mask" v-show="isShowMask">
-        <UsersAddView ref="usersAddViewRef" @close-mask="closeMask"></UsersAddView>
-        <UsersRemoveView ref="usersRemoveViewRef" :removeIds="removeIds" @close-mask="closeMask"></UsersRemoveView>
-        <UsersUpdateView ref="usersUpdateViewRef" :id="user.id" @close-mask="closeMask"></UsersUpdateView>
-        <ResetPasswordView ref="resetPasswordViewRef" :id="user.id" :username="user.username" @close-mask="closeMask"></ResetPasswordView>
+        <MyUsersAdd ref="myUsersAddRef" @close-mask="closeMask"></MyUsersAdd>
+        <MyUsersRemove ref="myUsersRemoveRef" :removeIds="removeIds" @close-mask="closeMask"></MyUsersRemove>
+        <MyUsersUpdate ref="myUsersUpdateRef" :id="user.id" @close-mask="closeMask"></MyUsersUpdate>
+        <MyResetPassword ref="myResetPasswordRef" :id="user.id" :username="user.username" @close-mask="closeMask"></MyResetPassword>
       </div>
     </transition>
   </div>
@@ -116,10 +116,10 @@
 
 <script>
 import { mapMutations } from 'vuex'
-import UsersAddView from './UsersAddView'
-import UsersRemoveView from './UsersRemoveView'
-import UsersUpdateView from './UsersUpdateView'
-import ResetPasswordView from './ResetPasswordView'
+import MyUsersAdd from '@/components/users/MyUsersAdd'
+import MyUsersRemove from '@/components/users/MyUsersRemove'
+import MyUsersUpdate from '@/components/users/MyUsersUpdate'
+import MyResetPassword from '@/components/users/MyResetPassword'
 
 export default {
   created() {
@@ -181,7 +181,7 @@ export default {
       this.removeIds = []
       this.checkedUserList.forEach(item => this.removeIds.push(item.id))
       this.isShowMask = true
-      this.$refs.usersRemoveViewRef.isShow = true
+      this.$refs.myUsersRemoveRef.isShow = true
     },
     // 翻页
     pageTurning(current) {
@@ -193,26 +193,26 @@ export default {
     // 显示增加对话框
     showUserAdd() {
       this.isShowMask = true
-      const usersAddViewRef = this.$refs.usersAddViewRef
-      usersAddViewRef.getRoleList()
-      usersAddViewRef.isShow = true
+      const myUsersAddRef = this.$refs.myUsersAddRef
+      myUsersAddRef.getRoleList()
+      myUsersAddRef.isShow = true
     },
     // 显示删除对话框
     showUserRemove(id) {
       this.removeIds = [id]
       this.isShowMask = true
-      this.$refs.usersRemoveViewRef.isShow = true
+      this.$refs.myUsersRemoveRef.isShow = true
     },
     // 显示修改对话框
     showUserUpdate(id) {
       this.user.id = id
       this.$nextTick(async () => {
         this.isShowMask = true
-        const usersUpdateViewRef = this.$refs.usersUpdateViewRef
-        await usersUpdateViewRef.getUserInfo()
-        await usersUpdateViewRef.getRoleList()
-        await usersUpdateViewRef.getRoleByUserId()
-        usersUpdateViewRef.isShow = true
+        const myUsersUpdateRef = this.$refs.myUsersUpdateRef
+        await myUsersUpdateRef.getUserInfo()
+        await myUsersUpdateRef.getRoleList()
+        await myUsersUpdateRef.getRoleByUserId()
+        myUsersUpdateRef.isShow = true
       })
     },
     // 重置密码
@@ -220,7 +220,7 @@ export default {
       this.user.id = id
       this.user.username = username
       this.isShowMask = true
-      this.$refs.resetPasswordViewRef.isShow = true
+      this.$refs.myResetPasswordRef.isShow = true
     },
     // 关闭遮盖层
     closeMask(type) {
@@ -237,10 +237,10 @@ export default {
     }
   },
   components: {
-    UsersAddView, // 用户增加对话框
-    UsersRemoveView, // 用户删除对话框
-    UsersUpdateView, // 用户修改对话框
-    ResetPasswordView // 重置密码对话框
+    MyUsersAdd, // 用户增加对话框
+    MyUsersRemove, // 用户删除对话框
+    MyUsersUpdate, // 用户修改对话框
+    MyResetPassword // 重置密码对话框
   }
 }
 </script>
@@ -251,9 +251,6 @@ export default {
   header {
     display: flex;
     align-items: center;
-    border-radius: 10px;
-    padding: 10px;
-    background-color: white;
     font-size: 16px;
 
     input,
@@ -295,10 +292,7 @@ export default {
 
   // 内容区域
   section {
-    border-radius: 10px;
     margin-top: 10px;
-    padding: 10px;
-    background-color: white;
 
     // 按钮
     .btn-box {

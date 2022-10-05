@@ -1,7 +1,7 @@
 <template>
   <div class="roles-view">
     <!-- 面包屑导航 -->
-    <div class="breadcrumb">
+    <div class="card breadcrumb">
       <span @click="jumpTo('/home/welcome')"><a href="javascript:void(0)">首页</a></span>
       <i class="iconfont icon-right"></i>
       <span>系统管理</span>

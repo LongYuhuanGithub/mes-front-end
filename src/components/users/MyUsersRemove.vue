@@ -1,5 +1,5 @@
 <template>
-  <div class="user-remove-view" v-show="isShow">
+  <div class="my-users-remove" v-show="isShow">
     <!-- 标题 -->
     <div class="title">
       <h2>提示</h2>
@@ -46,7 +46,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.user-remove-view{
+.my-users-remove{
   position: absolute;
   top: 50%;
   left: 50%;

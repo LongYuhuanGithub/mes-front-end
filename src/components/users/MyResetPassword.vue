@@ -1,5 +1,5 @@
 <template>
-  <div class="user-update-view" v-show="isShow">
+  <div class="my-reset-password" v-show="isShow">
     <!-- 标题 -->
     <div class="title">
       <h2>重置密码</h2>
@@ -69,7 +69,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.user-update-view {
+.my-reset-password {
   position: absolute;
   top: 50%;
   left: 50%;

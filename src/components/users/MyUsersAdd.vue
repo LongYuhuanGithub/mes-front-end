@@ -1,5 +1,5 @@
 <template>
-  <div class="users-add-view" v-show="isShow">
+  <div class="my-users-add" v-show="isShow">
     <!-- 标题 -->
     <div class="title">
       <h2>添加用户</h2>
@@ -128,7 +128,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.users-add-view {
+.my-users-add {
   position: absolute;
   top: 50%;
   left: 50%;

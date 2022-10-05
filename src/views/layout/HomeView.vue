@@ -4,7 +4,7 @@
     <header>
       <img src="@/assets/images/logo.png" alt="">
       <h2>MES制造执行系统</h2>
-      <button @click="logout">退出登录</button>
+      <button @click="showLogout">退出登录</button>
     </header>
     <section>
       <!-- 主体内容 -->
@@ -20,22 +20,44 @@
         <MyAside></MyAside>
       </aside>
     </section>
+    <!-- 遮罩层 -->
+    <transition>
+      <div class="mask" v-show="isShowMask">
+        <MyLogout ref="myLogout" @close-mask="closeMask"></MyLogout>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script>
 import MyAside from '@/components/layout/MyAside'
+import MyLogout from '@/components/layout/MyLogout'
 
 export default {
+  data() {
+    return {
+      isShowMask: false // 控制遮盖层的显示与隐藏
+    }
+  },
   methods: {
-    logout() {
-      sessionStorage.removeItem('mes_front_end_token')
-      sessionStorage.removeItem('mes_front_end_userinfo')
-      this.$router.push('/login')
+    // 显示退出登录对话框
+    showLogout() {
+      this.isShowMask = true
+      this.$refs.myLogout.isShow = true
+    },
+    // 关闭遮盖层
+    closeMask(type) {
+      if (type === 'success') {
+        sessionStorage.removeItem('mes_front_end_token')
+        sessionStorage.removeItem('mes_front_end_userinfo')
+        this.isShowMask = false
+        this.$router.push('/login')
+      } else if (type === 'close') this.isShowMask = false
     }
   },
   components: {
-    MyAside
+    MyAside,
+    MyLogout
   }
 }
 </script>
@@ -103,6 +125,32 @@ export default {
       background-color: #21252b;
       color: #abb2bf;
     }
+  }
+
+  // 遮盖层
+  .mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+
+  // Transition 组件的过渡样式
+  .v-enter-active,
+  .v-leave-active {
+    transition: all .3s;
+  }
+
+  .v-enter,
+  .v-leave-to {
+    opacity: 0;
+  }
+
+  .v-enter-to,
+  .v-leave {
+    opacity: 1;
   }
 }
 </style>
