@@ -7,8 +7,8 @@
 
 body {
   background-color: #fff;
-  color: #000;
-  font: 14px/1.5 Consolas, \6977\4F53, sans-serif; // 字体大小 16px 行高 1.5 倍，\6977\4F53 就是楷体的意思，这样浏览器兼容性比较好
+  color: #555;
+  font: 14px/1.5 Consolas, SimHei, sans-serif; // 字体大小 16px 行高 1.5 倍
   -webkit-font-smoothing: antialiased; // CSS3 抗锯齿形，让文字显示的更加清晰
 }
 
@@ -28,13 +28,16 @@ img {
   vertical-align: middle; // 取消图片底侧有空白缝隙的问题
 }
 
-// 取消 a 标签的下划线并设置默认颜色
+// a 标签的样式
 a {
-  color: #666;
+  color: #000;
+  font-weight: bold;
   text-decoration: none;
+  transition: all .3s;
 
-  &:hover {
-    color: #c81623;
+  &:hover,
+  &:focus {
+    color: #409eff;
   }
 }
 
@@ -107,6 +110,8 @@ button {
 
 // 滚动条样式的类名
 .scroll-bar {
+  overflow: scroll;
+
   // 滚动条整体样式
   &::-webkit-scrollbar {
     width: 12px;
@@ -115,7 +120,6 @@ button {
 
   // 滚动条里面小方块
   &::-webkit-scrollbar-thumb {
-    border-radius: 12px;
     background-color: rgba(70, 73, 77, 0.8);
 
     &:hover {
@@ -125,7 +129,6 @@ button {
 
   // 滚动条底层颜色
   &::-webkit-scrollbar-track {
-    border-radius: 12px;
     background-color: #2b2e34;
   }
 }

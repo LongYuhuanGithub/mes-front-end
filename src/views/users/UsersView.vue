@@ -1,433 +1,544 @@
 <template>
   <div class="users-view">
+    <!-- 面包屑导航 -->
+    <div class="breadcrumb">
+      <span @click="jumpTo('/home/welcome')"><a href="javascript:void(0)">首页</a></span>
+      <i class="iconfont icon-right"></i>
+      <span>系统管理</span>
+      <i class="iconfont icon-right"></i>
+      <span>用户管理</span>
+    </div>
+
     <!-- 头部搜索区域 -->
     <header>
       <div>
-        用户名称：<input type="text" v-model="user.username">
+        用户名称：<input type="text" v-model="user.username" @keyup.enter="getUserList">
       </div>
       <div>
-        手机号码：<input type="text" v-model="user.phone">
+        手机号码：<input type="text" v-model="user.phone" @keyup.enter="getUserList">
       </div>
       <div>
         用户状态：
         <select v-model="user.status">
+          <option value="">所有</option>
           <option value="0">正常</option>
           <option value="1">停用</option>
-          <option value="">所有</option>
         </select>
       </div>
       <div>
-        <button><i class="iconfont icon-search"></i>搜索</button>
-        <button><i class="iconfont icon-reload"></i>重置</button>
+        <button @click="getUserList"><i class="iconfont icon-search"></i>搜索</button>
+        <button @click="user = { id: 0, username: '', phone: '', status: '' }"><i class="iconfont icon-reload"></i>重置</button>
       </div>
     </header>
+
     <!-- 内容区域 -->
     <section>
       <!-- 按钮 -->
       <div class="btn-box">
-        <div class="crud-btn">
-          <div>
-            <button class="crud-one" @click="userAddShow"><i></i>新增</button>
-          </div>
-          <div>
-            <button class="crud-three"><i></i>删除</button>
-          </div>
-          <div>
-            <button class="crud-four"><i></i>导入</button>
-          </div>
-          <div>
-            <button class="crud-five"><i></i>导出</button>
-          </div>
+        <div class="left">
+          <button @click="userAddShow"><i class="iconfont icon-plus"></i>新增</button>
+          <button @click="removeChecked"><i class="iconfont icon-close"></i>删除</button>
+          <button @click="print"><i class="iconfont icon-download"></i>导出</button>
         </div>
-        <div class="rests-btn">
+        <div class="right">
           <div>
-            <button><i class="iconfont icon-search"></i></button>
-          </div>
-          <div>
-            <button><i class="iconfont icon-sync"></i></button>
-          </div>
-          <div>
-            <button><i class="iconfont icon-database"></i></button>
-          </div>
-          <div>
-            <button><i class="iconfont icon-detail-fill"></i></button>
+            <button @click="reload"><i class="iconfont icon-sync"></i></button>
           </div>
         </div>
       </div>
       <!-- 表格 -->
-      <div class="table">
-        <table>
-          <thead class="table-header">
-          <tr>
-            <th><input type="checkbox"></th>
-            <th>登录名称</th>
-            <th>用户名称</th>
-            <th>部门</th>
-            <th>手机</th>
-            <th>备注</th>
-            <th>用户状态</th>
-            <th>创建时间</th>
-            <th>操作</th>
-          </tr>
-          </thead>
-          <tbody class="table-tbody">
-          <tr v-for="users in userList" :key="users.id">
-            <td><input type="checkbox" :value="users.id"></td>
-            <td>{{ users.username }}</td>
-            <td>{{ users.username }}</td>
-            <td>{{ users.dept }}</td>
-            <td>{{ users.phone }}</td>
-            <td>{{ users.remark }}</td>
-            <td>{{ users.status === '0' ? '正常' : '停用' }}</td>
-            <td>{{ users.create_time }}</td>
-            <td>
-              <button @click="userUpdateShow(users.id)"><i class="iconfont icon-edit-square"></i>编辑</button>
-              <button @click="userRemoveShow(users.id)"><i class="iconfont icon-close"></i>删除</button>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
+      <table cellpadding="0" cellspacing="0">
+        <thead>
+        <tr>
+          <th><input type="checkbox" :checked="isCheckedAll" @change="checkAllChange"></th>
+          <th>ID</th>
+          <th>用户名称</th>
+          <th>部门</th>
+          <th>手机</th>
+          <th>用户状态</th>
+          <th>创建时间</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="item in userList" :key="item.id">
+          <td><input type="checkbox" v-model="checkedUserList" :value="item"></td>
+          <td>{{ item.id }}</td>
+          <td>{{ item.username }}</td>
+          <td>{{ item.dept ? item.dept : '无' }}</td>
+          <td>{{ item.phone }}</td>
+          <td>{{ item.status === '0' ? '正常' : '停用' }}</td>
+          <td>{{ item.create_time | formatDate }}</td>
+          <td>
+            <button @click="userUpdateShow(item.id)"><i class="iconfont icon-edit-square"></i>编辑</button>
+            <button @click="userRemoveShow(item.id)"><i class="iconfont icon-close"></i>删除</button>
+            <button><i class="iconfont icon-right-circle-fill"></i>更多操作</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
       <!-- 分页导航 -->
       <div class="pagination">
-        <p>
-          <span>当前页：{{ this.pagination.current }}</span>
-          <span>显示条数：{{ this.pagination.size }}</span>
-          <span>总条数：{{ this.pagination.total }}</span>
-        </p>
+        <span>总共{{ pagination.total }}条</span>
+        <span>
+          一页显示
+          <select v-model="pagination.size" @change="reload">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="40">40</option>
+            <option value="50">50</option>
+          </select>
+          条
+        </span>
+        <span>当前第{{ pagination.current }}页</span>
+        <span>总{{ pagination.pageSize }}页</span>
+        <span>
+          <button @click="pageTurning(pagination.current - 1)"><i class="iconfont icon-left"></i></button>
+        </span>
+        <span>
+          <button @click="pageTurning(pagination.current + 1)"><i class="iconfont icon-right"></i></button>
+        </span>
       </div>
     </section>
 
-    <!-- 模态框 -->
-    <div class="modal-box">
-      <!-- 遮罩层 -->
-      <div class="mask-layer" style="display:none">
-        <UserAddView></UserAddView>
-        <UserRemoveView :id="id"></UserRemoveView>
-        <UserUpdateView :updatelist="updatelist"></UserUpdateView>
+    <!-- 遮罩层 -->
+    <transition>
+      <div class="mask" v-show="isShowMask">
+        <UsersAddView ref="usersAddViewRef" @close-mask="closeMask"></UsersAddView>
+        <UsersRemoveView ref="usersRemoveViewRef" :removeIds="removeIds" @close-mask="closeMask"></UsersRemoveView>
+        <UsersUpdateView ref="usersUpdateViewRef" :id="user.id" @close-mask="closeMask"></UsersUpdateView>
       </div>
-    </div>
+    </transition>
   </div>
 </template>
 
 <script>
-import UserAddView from './UsersAddView.vue'
-import UserRemoveView from './UserRemoveView.vue'
-import UserUpdateView from './UserUpdateView.vue'
+import { mapMutations } from 'vuex'
+import UsersAddView from './UsersAddView.vue'
+import UsersRemoveView from './UsersRemoveView.vue'
+import UsersUpdateView from './UsersUpdateView.vue'
 
 export default {
-  async created() {
-    const { data } = await this.$http.get('/users', { params: this.pagination })
-    if (data.status !== 200) return this.$message(data.message)
-    this.userList = data.data
+  created() {
+    this.getUserList()
   },
   data() {
     return {
       userInfo: JSON.parse(sessionStorage.getItem('mes_front_end_userinfo')), // 当前登录的用户信息
       userList: [], // 用户列表
+      checkedUserList: [], // 选中的用户列表
+      removeIds: [], // 要删除的ID数组
       user: { // 用户数据模型
         id: 0, // ID
         username: '', // 用户名称
         phone: '', // 手机
-        status: '0' // 用户状态
+        status: '' // 用户状态
       },
       pagination: { // 分页导航
         current: 1, // 当前页数
         size: 10, // 一页显示几条
-        total: 100 // 总共多少条数据
+        total: 100, // 总共多少条数据
+        pageSize: 10 // 总共多少页
       },
-      updatelist: [] // 要修改id的用户列表
+      isShowMask: false, // 控制遮盖层的显示与隐藏
+      print: window.print // 打印
     }
   },
   methods: {
-    // 增加列表显示
-    userAddShow() {
-      // 遮罩层
-      const mask = document.querySelector('.mask-layer')
-      // 用户增加列表
-      const useradd = document.querySelector('.user-add')
-      mask.style.display = 'block'
-      useradd.style.display = 'block'
+    ...mapMutations(['setActiveByPath']),
+    // 路由跳转
+    jumpTo(url) {
+      this.$router.push(url)
+      this.setActiveByPath(this.$route.path)
     },
-    // 删除列表显示
-    userRemoveShow(id) {
-      this.id = id
-      // 遮罩层
-      const mask = document.querySelector('.mask-layer')
-      // 用户增加列表
-      const userremove = document.querySelector('.user-remove')
-      mask.style.display = 'block'
-      userremove.style.display = 'block'
-    },
-    // 修改列表显示
-    async userUpdateShow(id) {
-      // 获取要修改的用户
-      const { data } = await this.$http.get('/users/' + id)
+    // 获取用户列表
+    async getUserList() {
+      const params = { current: this.pagination.current, size: this.pagination.size }
+      if (this.user.username) params.username = this.user.username
+      if (this.user.phone) params.phone = this.user.phone
+      if (this.user.status) params.status = this.user.status
+      const { data } = await this.$http.get('/users', { params })
       if (data.status !== 200) return this.$message(data.message)
-      this.updatelist = data.data
-
-      // 遮罩层
-      const mask = document.querySelector('.mask-layer')
-      // 用户增加列表
-      const userupdate = document.querySelector('.user-update-view')
-      mask.style.display = 'block'
-      userupdate.style.display = 'block'
+      this.userList = data.data
+      this.pagination.total = data.total
+      this.pagination.pageSize = Math.ceil(this.pagination.total / this.pagination.size)
+    },
+    // 重新加载
+    reload() {
+      this.checkedUserList = []
+      this.getUserList()
+    },
+    // 全选框状态改变
+    checkAllChange(event) {
+      if (event.target.checked) this.checkedUserList = [...this.userList]
+      else this.checkedUserList = []
+    },
+    // 删除选中的用户
+    removeChecked() {
+      this.removeIds = []
+      this.checkedUserList.forEach(item => this.removeIds.push(item.id))
+      this.isShowMask = true
+      this.$refs.usersRemoveViewRef.isShow = true
+    },
+    // 翻页
+    pageTurning(current) {
+      if (current < 1 || current > this.pagination.pageSize) return
+      this.pagination.current = current
+      this.checkedUserList = []
+      this.getUserList()
+    },
+    // 显示增加对话框
+    userAddShow() {
+      this.isShowMask = true
+      const usersAddViewRef = this.$refs.usersAddViewRef
+      usersAddViewRef.getRoleList()
+      usersAddViewRef.isShow = true
+    },
+    // 显示删除对话框
+    userRemoveShow(id) {
+      this.removeIds = [id]
+      this.isShowMask = true
+      this.$refs.usersRemoveViewRef.isShow = true
+    },
+    // 显示修改对话框
+    userUpdateShow(id) {
+      this.user.id = id
+      this.$nextTick(async () => {
+        this.isShowMask = true
+        const usersUpdateViewRef = this.$refs.usersUpdateViewRef
+        await usersUpdateViewRef.getUserInfo()
+        await usersUpdateViewRef.getRoleList()
+        await usersUpdateViewRef.getRoleByUserId()
+        usersUpdateViewRef.isShow = true
+      })
+    },
+    // 关闭遮盖层
+    closeMask(type) {
+      if (type === 'success') {
+        this.isShowMask = false
+        this.getUserList()
+      } else if (type === 'close') this.isShowMask = false
+    }
+  },
+  computed: {
+    // 计算用户是否全部选中
+    isCheckedAll() {
+      return this.checkedUserList.length === this.userList.length
     }
   },
   components: {
-    UserAddView, // 用户增加模块
-    UserRemoveView, // 用户删除模块
-    UserUpdateView// 用户修改模块
+    UsersAddView, // 用户增加模块
+    UsersRemoveView, // 用户删除模块
+    UsersUpdateView // 用户修改模块
   }
 }
 </script>
 
 <style lang="scss" scoped>
-// 头部搜索区域
-header {
-  display: flex;
-  align-items: center;
-  border-radius: 10px;
-  padding: 10px;
-  background-color: white;
-  font-size: 16px;
-  box-sizing: border-box;
-
-  input,
-  select {
-    border: 1px solid #ccc;
-    margin-right: 15px;
-    padding: 5px;
-    width: 200px;
-    height: 30px;
-  }
-
-  button {
-    border-radius: 16px;
-    padding: 0;
-    width: 64px;
-    height: 32px;
-    color: white;
-
-    &:first-child {
-      margin-right: 2px;
-      background-color: #1ab394;
-
-      &:hover {
-        background-color: #29cba8;
-      }
-    }
-
-    &:last-child {
-      background-color: #f8ac59;
-
-      &:hover {
-        background-color: #f1b87a;
-      }
-    }
-  }
-}
-
-// 内容区域
-section {
-  box-sizing: border-box;
-  background-color: white;
-  margin-top: 10px;
-  padding: 10px;
-  border-radius: 10px;
-  // 按钮
-  .btn-box {
+.users-view {
+  // 头部搜索区域
+  header {
     display: flex;
-    justify-self: space-between;
-    font-size: 14px;
-    margin-bottom: 10px;
+    align-items: center;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: white;
+    font-size: 16px;
 
-    i {
-      font-size: 18px;
+    input,
+    select {
+      border: 1px solid #ccc;
+      margin-right: 15px;
+      padding: 5px;
+      width: 200px;
+      height: 30px;
     }
 
-    .crud-btn {
-      display: flex;
-      flex: 1;
+    button {
+      border-radius: 16px;
+      padding: 0;
+      width: 64px;
+      height: 32px;
+      color: white;
 
-      button {
-        width: 70px;
-        height: 40px;
+      &:first-child {
         margin-right: 5px;
-        border-radius: 5px;
-        color: white;
+        background-color: #1ab394;
+
+        &:hover,
+        &:focus {
+          background-color: #29cba8;
+        }
       }
 
-      // 设置按钮的颜色
-      .crud-one {
-        background-color: blue;
-      }
+      &:last-child {
+        background-color: #f8ac59;
 
-      .crud-two {
-        background-color: rgb(81, 236, 177);
-      }
-
-      .crud-three {
-        background-color: pink;
-      }
-
-      .crud-four {
-        background-color: rgb(117, 235, 235);
-      }
-
-      .crud-five {
-        background-color: orange;
-      }
-
-    }
-
-    .rests-btn {
-      display: flex;
-      flex: 1;
-      justify-content: flex-end;
-
-      button {
-        width: 50px;
-        height: 40px;
-        background-color: white;
-        border: 1px solid #ccc;
+        &:hover,
+        &:focus {
+          background-color: #f1b87a;
+        }
       }
     }
   }
 
-  .table {
-    box-sizing: border-box;
-    text-align: left;
+  // 内容区域
+  section {
+    border-radius: 10px;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: white;
 
-    .table-header {
-      font-size: 16px;
+    // 按钮
+    .btn-box {
+      display: flex;
+      justify-content: space-between;
 
-      th {
-        padding: 10px 0px 10px 5px;
-        background-color: #ccc;
-
-        &:first-child {
-          width: 50px;
-        }
-
-        &:nth-child(2) {
-          width: 120px;
-        }
-
-        &:nth-child(3) {
-          width: 120px;
-        }
-
-        &:nth-child(4) {
-          width: 120px;
-        }
-
-        &:nth-child(5) {
-          width: 150px;
-        }
-
-        &:nth-child(6) {
-          width: 150px;
-        }
-
-        &:nth-child(7) {
-          // width: 100px;
-        }
-
-        &:nth-child(8) {
-          text-align: center;
-          width: 250px;
-        }
-
-        &:nth-child(9) {
-          text-align: center;
-          width: 250px;
-        }
-      }
-    }
-
-    .table-tbody {
-      font-size: 14px;
-
-      td {
-        padding: 10px 0px 10px 5px;
-
-        &:first-child {
-          width: 50px;
-        }
-
-        &:nth-child(2) {
-          width: 120px;
-        }
-
-        &:nth-child(3) {
-          width: 120px;
-        }
-
-        &:nth-child(4) {
-          width: 120px;
-        }
-
-        &:nth-child(5) {
-          width: 150px;
-        }
-
-        &:nth-child(6) {
-          width: 150px;
-        }
-
-        &:nth-child(7) {
-          width: 200px;
-        }
-
-        &:nth-child(8) {
-          text-align: center;
-          width: 250px;
-        }
+      .left {
+        display: flex;
 
         button {
-          width: 60px;
-          height: 30px;
-          margin-right: 5px;
           border-radius: 5px;
+          margin-right: 5px;
           color: white;
 
           &:first-child {
-            background-color: blue;
+            background-color: #1c84c6;
+
+            &:hover,
+            &:focus {
+              background-color: #4999cc;
+            }
           }
 
           &:nth-child(2) {
-            background-color: red;
+            background-color: #f59da6;
+
+            &:hover,
+            &:focus {
+              background-color: #f3b0b7;
+            }
           }
 
           &:last-child {
-            background-color: rgb(27, 231, 27);
+            margin-right: 0;
+            background-color: #f8ac59;
+
+            &:hover,
+            &:focus {
+              background-color: #f5ba79;
+            }
+          }
+        }
+      }
+
+      .right {
+        div {
+          button {
+            border: 1px solid #ccc;
+            width: 50px;
+            background-color: white;
+
+            &:hover,
+            &:focus {
+              background-color: #eee;
+            }
+
+            i {
+              font-size: 18px;
+            }
+          }
+        }
+      }
+    }
+
+    // 表格
+    table {
+      margin-top: 10px;
+      width: 100%;
+
+      thead {
+        background-color: #eff3f8;
+        font-size: 16px;
+
+        th {
+          border-bottom: 1px solid #d8d9db;
+          padding: 10px;
+
+          &:nth-child(1) {
+            width: 3%;
+          }
+
+          &:nth-child(2) {
+            width: 6%;
+          }
+
+          &:nth-child(3) {
+            width: 15%;
+          }
+
+          &:nth-child(4) {
+            width: 15%;
+          }
+
+          &:nth-child(5) {
+            width: 15%;
+          }
+
+          &:nth-child(6) {
+            width: 6%;
+          }
+
+          &:nth-child(7) {
+            width: 20%;
+          }
+
+          &:nth-child(8) {
+            width: 20%;
+          }
+        }
+      }
+
+      tbody {
+        text-align: center;
+
+        tr {
+          transition: all .5s;
+
+          &:hover {
+            background-color: #eee;
+          }
+
+          td {
+            border-bottom: 1px solid #d8d9db;
+            padding: 10px;
+
+            &:nth-child(1) {
+              width: 3%;
+            }
+
+            &:nth-child(2) {
+              width: 6%;
+            }
+
+            &:nth-child(3) {
+              width: 15%;
+            }
+
+            &:nth-child(4) {
+              width: 15%;
+            }
+
+            &:nth-child(5) {
+              width: 15%;
+            }
+
+            &:nth-child(6) {
+              width: 6%;
+            }
+
+            &:nth-child(7) {
+              width: 20%;
+            }
+
+            &:nth-child(8) {
+              width: 20%;
+
+              button {
+                margin-right: 5px;
+                padding: 5px;
+                color: white;
+
+                &:nth-child(1) {
+                  background-color: #1580c4;
+
+                  &:hover,
+                  &:focus {
+                    background-color: #4999cc;
+                  }
+                }
+
+                &:nth-child(2) {
+                  background-color: #ed5565;
+
+                  &:hover,
+                  &:focus {
+                    background-color: #ee707d;
+                  }
+                }
+
+                &:nth-child(3) {
+                  margin-right: 0;
+                  background-color: #23c6c8;
+
+                  &:hover,
+                  &:focus {
+                    background-color: #29dde0;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // 分页导航
+    .pagination {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+
+      span {
+        margin-right: 10px;
+
+        select {
+          border: 1px solid #ccc;
+          padding: 5px 10px;
+        }
+
+        button {
+          padding: 5px 7px;
+          background-color: #909399;
+          color: #fff;
+
+          &:hover {
+            background-color: #6b6d71;
+          }
+
+          i {
+            font-size: 18px;
           }
         }
       }
     }
   }
-}
 
-// 分页导航
-.pagination {
-  text-align: left;
-  font-size: 14px;
-
-  span {
-    margin-right: 10px;
-  }
-}
-
-// 模态框
-.modal-box {
-  .mask-layer {
+  // 遮盖层
+  .mask {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(124, 119, 119, 0.6);
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+
+  // Transition 组件的过渡样式
+  .v-enter-active,
+  .v-leave-active {
+    transition: all .3s;
+  }
+
+  .v-enter,
+  .v-leave-to {
+    opacity: 0;
+  }
+
+  .v-enter-to,
+  .v-leave {
+    opacity: 1;
   }
 }
 </style>

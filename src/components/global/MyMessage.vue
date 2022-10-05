@@ -62,12 +62,12 @@ export default {
 
 .v-enter,
 .v-leave-to {
-  top: 0 !important;
-  transform: translateX(-50%) translateY(-100%) !important;
+  top: 0;
+  transform: translateX(-50%) translateY(-100%);
 }
 
 .v-enter-to,
 .v-leave {
-  top: 3% !important;
+  top: 3%;
 }
 </style>

@@ -1,8 +1,8 @@
 <template>
-  <div class="users-add-view" v-show="isShow">
+  <div class="user-update-view" v-show="isShow">
     <!-- 标题 -->
     <div class="title">
-      <h2>添加用户</h2>
+      <h2>编辑用户</h2>
     </div>
     <hr/>
     <!-- 内容 -->
@@ -10,13 +10,7 @@
       <div>
         <label>
           <span>用户名称：</span>
-          <input type="text" v-model="user.username">
-        </label>
-      </div>
-      <div>
-        <label>
-          <span>密码：</span>
-          <input type="password" v-model="user.password">
+          <input type="text" v-model="user.username" disabled>
         </label>
       </div>
       <div>
@@ -49,6 +43,15 @@
       </div>
       <div>
         <label>
+          <span>状态：</span>
+          <select v-model="user.status">
+            <option value="0">正常</option>
+            <option value="1">停用</option>
+          </select>
+        </label>
+      </div>
+      <div>
+        <label>
           <span>角色：</span>
           <label v-for="item in roleList" :key="item.id">
             <input type="checkbox" v-model="user.roleIds" :value="item.id">{{ item.role_name }}
@@ -66,60 +69,57 @@
 
 <script>
 export default {
+  props: ['id'],
   data() {
     return {
       isShow: false, // 控制这个组件的显示与隐藏
       roleList: [], // 角色列表
       user: { // 用户数据模型
         username: '', // 用户名称
-        password: '', // 密码
         email: '', // 邮箱
         phone: '', // 手机
         gender: '0', // 性别
-        create_by: '', // 创建者的用户名
+        status: '0', // 状态
         remark: '', // 备注
         roleIds: [] // 角色ID数组
       }
     }
   },
   methods: {
+    // 获取用户信息
+    async getUserInfo() {
+      const { data } = await this.$http.get('/users/' + this.id)
+      if (data.status !== 200) return this.$message(data.message)
+      this.user.username = data.data.username
+      this.user.email = data.data.email
+      this.user.phone = data.data.phone
+      this.user.gender = data.data.gender
+      this.user.status = data.data.status
+      this.user.remark = data.data.remark
+      this.user.roleIds = []
+    },
     // 获取角色列表
     async getRoleList() {
-      const { data } = await this.$http.get('/roles')
-      if (data.status !== 200) return this.$message(data.message)
-      this.roleList = data.data
+      const { data: data2 } = await this.$http.get('/roles')
+      if (data2.status !== 200) return this.$message(data2.message)
+      this.roleList = data2.data
     },
-    // 增加
+    // 按照用户ID获取角色列表
+    async getRoleByUserId() {
+      const { data: data3 } = await this.$http.get('/roles/getrolelistbyuserid/' + this.id)
+      if (data3.status !== 200) return this.$message(data3.message)
+      data3.data.forEach(item => this.user.roleIds.push(item.id))
+    },
+    // 修改
     async save() {
-      this.user.create_by = JSON.parse(sessionStorage.getItem('mes_front_end_userinfo')).username
-      const { data } = await this.$http.post('/users', this.user)
+      const { data } = await this.$http.put('/users', { id: this.id, ...this.user })
       if (data.status !== 200) return this.$message(data.message)
       this.$message(data.message, 'success')
-      this.user = {
-        username: '',
-        password: '',
-        email: '',
-        phone: '',
-        gender: '0',
-        create_by: '',
-        remark: '',
-        roleIds: []
-      }
       this.isShow = false
       this.$emit('close-mask', 'success')
     },
     // 返回
     hide() {
-      this.user = {
-        username: '',
-        password: '',
-        email: '',
-        phone: '',
-        gender: '0',
-        create_by: '',
-        remark: '',
-        roleIds: []
-      }
       this.isShow = false
       this.$emit('close-mask', 'close')
     }
@@ -128,7 +128,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.users-add-view {
+.user-update-view {
   position: absolute;
   top: 50%;
   left: 50%;

@@ -1,11 +1,14 @@
 html,
 body,
-#app,
-.app,
-.home-view {
+#app {
   height: 100%;
 }
 
-.app {
-  overflow: hidden;
+// 面包屑导航
+.breadcrumb {
+  margin-bottom: 10px;
+
+  i {
+    margin: 0 5px;
+  }
 }

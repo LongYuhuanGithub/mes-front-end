@@ -19,41 +19,41 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
+
 export default {
   async created() {
     // 获取菜单列表
     const { data } = await this.$http.get('/menus')
     if (data.status !== 200) return alert(data.message)
-    this.menuList = data.data
+    this.setMenuList(data.data)
 
-    // 页面刷新时，根据路径展开对应的目录与菜单的高亮
-    this.currentPath = this.$route.path
-    this.menuList.some(item => {
-      const menu = item.children.find(item2 => this.currentPath === item2.url)
-      if (menu) {
-        this.unfoldId = menu.parent_id
-        return true
-      }
-      return false
-    })
-  },
-  data() {
-    return {
-      menuList: [], // 菜单列表
-      unfoldId: 0, // 当前展开的目录ID
-      currentPath: '' // 当前高亮的菜单路径
-    }
+    // 刷新时，根据路径高亮对应的菜单并展开对应的目录
+    this.setActiveByPath(this.$route.path)
   },
   methods: {
+    ...mapMutations(['setMenuList', 'setUnfoldId', 'setActiveByPath']),
     // 切换菜单展开与关闭
     triggerMenu(id) {
       if (this.unfoldId === id) this.unfoldId = 0
-      else this.unfoldId = id
+      else this.setUnfoldId(id)
     },
-    // 点击菜单跳转路由
+    // 路由跳转
     jumpTo(url) {
       this.$router.push(url)
-      this.currentPath = this.$route.path
+      this.setActiveByPath(this.$route.path)
+    }
+  },
+  computed: {
+    ...mapState(['menuList', 'unfoldId', 'currentPath'])
+  },
+  watch: {
+    // 监听地址栏发生变化
+    $route: {
+      immediate: true,
+      handler(newVal) {
+        this.setActiveByPath(newVal.path)
+      }
     }
   }
 }

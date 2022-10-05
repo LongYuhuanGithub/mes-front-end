@@ -9,7 +9,11 @@
     <section>
       <!-- 主体内容 -->
       <main class="scroll-bar">
-        <router-view></router-view>
+        <transition>
+          <keep-alive>
+            <router-view/>
+          </keep-alive>
+        </transition>
       </main>
       <!-- 左侧导航区域 -->
       <aside class="scroll-bar">
@@ -38,6 +42,8 @@ export default {
 
 <style lang="scss" scoped>
 .home-view {
+  height: 100%;
+
   // 头部
   header {
     display: flex;
@@ -53,10 +59,10 @@ export default {
     }
 
     button {
-      background-color: #bbb;
+      background-color: #eee;
 
       &:hover {
-        background-color: #eee;
+        background-color: #bbb;
       }
     }
   }
@@ -73,6 +79,20 @@ export default {
       padding: 10px;
       height: 100%;
       background-color: #ccc;
+
+      // Transition 组件的过渡样式
+      .v-enter-active,
+      .v-leave-active {
+        transition: all .5s ease-in-out;
+      }
+
+      .v-enter,
+      .v-leave-to {
+        position: absolute;
+        width: 100%;
+        transform: translateX(100%);
+        opacity: 0;
+      }
     }
 
     // 左侧导航区域
@@ -82,7 +102,6 @@ export default {
       height: 100%;
       background-color: #21252b;
       color: #abb2bf;
-      overflow: auto;
     }
   }
 }
