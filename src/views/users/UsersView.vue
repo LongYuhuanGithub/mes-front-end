@@ -36,7 +36,7 @@
       <!-- 按钮 -->
       <div class="btn-box">
         <div class="left">
-          <button @click="userAddShow"><i class="iconfont icon-plus"></i>新增</button>
+          <button @click="showUserAdd"><i class="iconfont icon-plus"></i>新增</button>
           <button @click="removeChecked"><i class="iconfont icon-close"></i>删除</button>
           <button @click="print"><i class="iconfont icon-download"></i>导出</button>
         </div>
@@ -70,9 +70,9 @@
           <td>{{ item.status === '0' ? '正常' : '停用' }}</td>
           <td>{{ item.create_time | formatDate }}</td>
           <td>
-            <button @click="userUpdateShow(item.id)"><i class="iconfont icon-edit-square"></i>编辑</button>
-            <button @click="userRemoveShow(item.id)"><i class="iconfont icon-close"></i>删除</button>
-            <button><i class="iconfont icon-right-circle-fill"></i>更多操作</button>
+            <button @click="showUserUpdate(item.id)"><i class="iconfont icon-edit-square"></i>编辑</button>
+            <button @click="showUserRemove(item.id)"><i class="iconfont icon-close"></i>删除</button>
+            <button @click="resetPassword(item.id, item.username)"><i class="iconfont icon-key"></i>重置密码</button>
           </td>
         </tr>
         </tbody>
@@ -108,6 +108,7 @@
         <UsersAddView ref="usersAddViewRef" @close-mask="closeMask"></UsersAddView>
         <UsersRemoveView ref="usersRemoveViewRef" :removeIds="removeIds" @close-mask="closeMask"></UsersRemoveView>
         <UsersUpdateView ref="usersUpdateViewRef" :id="user.id" @close-mask="closeMask"></UsersUpdateView>
+        <ResetPasswordView ref="resetPasswordViewRef" :id="user.id" :username="user.username" @close-mask="closeMask"></ResetPasswordView>
       </div>
     </transition>
   </div>
@@ -115,9 +116,10 @@
 
 <script>
 import { mapMutations } from 'vuex'
-import UsersAddView from './UsersAddView.vue'
-import UsersRemoveView from './UsersRemoveView.vue'
-import UsersUpdateView from './UsersUpdateView.vue'
+import UsersAddView from './UsersAddView'
+import UsersRemoveView from './UsersRemoveView'
+import UsersUpdateView from './UsersUpdateView'
+import ResetPasswordView from './ResetPasswordView'
 
 export default {
   created() {
@@ -189,20 +191,20 @@ export default {
       this.getUserList()
     },
     // 显示增加对话框
-    userAddShow() {
+    showUserAdd() {
       this.isShowMask = true
       const usersAddViewRef = this.$refs.usersAddViewRef
       usersAddViewRef.getRoleList()
       usersAddViewRef.isShow = true
     },
     // 显示删除对话框
-    userRemoveShow(id) {
+    showUserRemove(id) {
       this.removeIds = [id]
       this.isShowMask = true
       this.$refs.usersRemoveViewRef.isShow = true
     },
     // 显示修改对话框
-    userUpdateShow(id) {
+    showUserUpdate(id) {
       this.user.id = id
       this.$nextTick(async () => {
         this.isShowMask = true
@@ -212,6 +214,13 @@ export default {
         await usersUpdateViewRef.getRoleByUserId()
         usersUpdateViewRef.isShow = true
       })
+    },
+    // 重置密码
+    resetPassword(id, username) {
+      this.user.id = id
+      this.user.username = username
+      this.isShowMask = true
+      this.$refs.resetPasswordViewRef.isShow = true
     },
     // 关闭遮盖层
     closeMask(type) {
@@ -228,9 +237,10 @@ export default {
     }
   },
   components: {
-    UsersAddView, // 用户增加模块
-    UsersRemoveView, // 用户删除模块
-    UsersUpdateView // 用户修改模块
+    UsersAddView, // 用户增加对话框
+    UsersRemoveView, // 用户删除对话框
+    UsersUpdateView, // 用户修改对话框
+    ResetPasswordView // 重置密码对话框
   }
 }
 </script>
