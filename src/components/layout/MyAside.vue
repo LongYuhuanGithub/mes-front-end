@@ -27,9 +27,6 @@ export default {
     const { data } = await this.$http.get('/menus')
     if (data.status !== 200) return alert(data.message)
     this.setMenuList(data.data)
-
-    // 刷新时，根据路径高亮对应的菜单并展开对应的目录
-    this.setActiveByPath(this.$route.path)
   },
   methods: {
     ...mapMutations(['setMenuList', 'setUnfoldId', 'setActiveByPath']),
