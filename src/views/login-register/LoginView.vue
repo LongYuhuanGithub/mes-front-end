@@ -5,15 +5,15 @@
       <div class="login-title"><span>登录</span></div>
       <div class="login-content">
         <div class="form-title">
-          <div :class="[isDisplay ? '' : 'color']" @click="login">账号登录</div>
-          <div :class="[isDisplay ? 'color' : '']" @click="phoneLogin">手机登录</div>
+          <div :class="[isDisplay ? 'color' : '']" @click="login">账号登录</div>
+          <div :class="[isDisplay ? '' : 'color']" @click="phoneLogin">手机登录</div>
         </div>
         <div class="form" ref="form">
           <div v-if="isDisplay">
-            <input type="text" name="phone" v-model="phone" placeholder="手机号">
+            <input type="text" name="username" v-model="value" placeholder="用户名">
           </div>
           <div v-else>
-            <input type="text" name="username" v-model="phone" placeholder="用户名">
+            <input type="text" name="phone" v-model="value" placeholder="手机号">
           </div>
           <div>
             <input type="password" name="password" v-model="password" placeholder="密码">
@@ -40,38 +40,43 @@ export default {
   },
   data() {
     return {
-      phone: '', // 输入的电话号
-      password: '', // 输入的密码
-      isDisplay: false // 控制手机登录和账号登录的高亮显示
+      value: 'admin', // 输入的用户名或电话号
+      password: '123456', // 输入的密码
+      isDisplay: true // 控制账号登录和手机登录的高亮显示，true 表示账号登录
     }
   },
   methods: {
-    // 点击手机登录
-    phoneLogin() {
-      this.phone = ''
+    // 点击账号登录
+    login() {
+      this.value = ''
       this.password = ''
       this.isDisplay = true
     },
-    // 点击账号登录
-    login() {
-      this.phone = ''
+    // 点击手机登录
+    phoneLogin() {
+      this.value = ''
       this.password = ''
       this.isDisplay = false
     },
     // 提交登录表单
     async send() {
-      let url = '/api/loginphone'
+      // 账号登录
+      let url = '/api/login'
       let user = {
-        phone: this.phone,
+        username: this.value,
         password: this.password
       }
+
+      // 手机登录
       if (!this.isDisplay) {
-        url = '/api/login'
+        url = '/api/loginphone'
         user = {
-          username: this.phone,
+          phone: this.value,
           password: this.password
         }
       }
+
+      // 登录
       const { data } = await this.$http.post(url, user)
       if (data.status !== 200) return this.$message('登录失败')
       sessionStorage.setItem('mes_front_end_token', data.token)
