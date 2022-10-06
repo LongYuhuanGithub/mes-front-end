@@ -50,10 +50,10 @@ export default {
   watch: {
     // 监听地址栏发生变化
     $route: {
-      immediate: true,
       handler(newVal) {
         this.setActiveByPath(newVal.path)
-      }
+      },
+      immediate: true
     }
   }
 }
