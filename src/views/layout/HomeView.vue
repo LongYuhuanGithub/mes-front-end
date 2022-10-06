@@ -98,6 +98,7 @@ export default {
     // 主体内容
     main {
       flex: 1;
+      position: relative;
       padding: 10px;
       height: 100%;
       background-color: #ccc;
