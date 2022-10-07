@@ -89,6 +89,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$vw: 19.2;
+
 .login-view {
   width: 100%;
   height: 100%;
@@ -98,18 +100,18 @@ export default {
     position: absolute;
     top: 50%;
     left: 50%;
-    border-radius: 20px;
-    padding: 40px 70px;
-    width: 400px;
-    height: 350px;
+    border-radius: (20vw / $vw);
+    padding: (40vw / $vw) (70vw / $vw);
+    width: (400vw / $vw);
+    height: (350vw / $vw);
     background-color: rgba(0, 0, 0, 0.6);
     transform: translate(-50%, -50%);
 
     .login-title {
-      margin-bottom: 20px;
+      margin-bottom: (20vw / $vw);
       color: #eee;
       text-align: center;
-      font-size: 24px;
+      font-size: (24vw / $vw);
       font-weight: 700;
     }
 
@@ -120,7 +122,7 @@ export default {
 
         div {
           color: #a8a8a8;
-          font-size: 13px;
+          font-size: (13vw / $vw);
           font-weight: bold;
           cursor: pointer;
 
@@ -131,15 +133,15 @@ export default {
       }
 
       .form {
-        margin-top: 10px;
+        margin-top: (10vw / $vw);
         text-align: center;
 
         input {
-          margin: 10px 0;
+          margin: (10vw / $vw) 0;
         }
 
         button {
-          margin: 10px 0;
+          margin: (10vw / $vw) 0;
           width: 100%;
           background-color: #1890FF;
           color: white;
@@ -153,7 +155,7 @@ export default {
       .form-bottom {
         display: flex;
         justify-content: space-between;
-        font-size: 14px;
+        font-size: (14vw / $vw);
         font-weight: 700;
 
         a {

@@ -246,31 +246,33 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$vw: 19.2;
+
 .users-view {
   // 头部搜索区域
   header {
     display: flex;
     align-items: center;
-    font-size: 16px;
+    font-size: (16vw / $vw);
 
     input,
     select {
-      border: 1px solid #ccc;
-      margin-right: 15px;
-      padding: 5px;
-      width: 200px;
-      height: 30px;
+      border: (1vw / $vw) solid #ccc;
+      margin-right: (15vw / $vw);
+      padding: (5vw / $vw);
+      width: (200vw / $vw);
+      height: (30vw / $vw);
     }
 
     button {
-      border-radius: 16px;
+      border-radius: (16vw / $vw);
       padding: 0;
-      width: 64px;
-      height: 32px;
+      width: (64vw / $vw);
+      height: (32vw / $vw);
       color: white;
 
       &:first-child {
-        margin-right: 5px;
+        margin-right: (5vw / $vw);
         background-color: #1ab394;
 
         &:hover,
@@ -287,12 +289,16 @@ export default {
           background-color: #f1b87a;
         }
       }
+
+      i {
+        font-size: (16vw / $vw);
+      }
     }
   }
 
   // 内容区域
   section {
-    margin-top: 10px;
+    margin-top: (10vw / $vw);
 
     // 按钮
     .btn-box {
@@ -303,8 +309,8 @@ export default {
         display: flex;
 
         button {
-          border-radius: 5px;
-          margin-right: 5px;
+          border-radius: (5vw / $vw);
+          margin-right: (5vw / $vw);
           color: white;
 
           &:first-child {
@@ -340,8 +346,8 @@ export default {
       .right {
         div {
           button {
-            border: 1px solid #ccc;
-            width: 50px;
+            border: (1vw / $vw) solid #ccc;
+            width: (50vw / $vw);
             background-color: white;
 
             &:hover,
@@ -350,7 +356,7 @@ export default {
             }
 
             i {
-              font-size: 18px;
+              font-size: (18vw / $vw);
             }
           }
         }
@@ -359,16 +365,16 @@ export default {
 
     // 表格
     table {
-      margin-top: 10px;
+      margin-top: (10vw / $vw);
       width: 100%;
 
       thead {
         background-color: #eff3f8;
-        font-size: 16px;
+        font-size: (16vw / $vw);
 
         th {
-          border-bottom: 1px solid #d8d9db;
-          padding: 10px;
+          border-bottom: (1vw / $vw) solid #d8d9db;
+          padding: (10vw / $vw);
 
           &:nth-child(1) {
             width: 3%;
@@ -415,8 +421,8 @@ export default {
           }
 
           td {
-            border-bottom: 1px solid #d8d9db;
-            padding: 10px;
+            border-bottom: (1vw / $vw) solid #d8d9db;
+            padding: (10vw / $vw);
 
             &:nth-child(1) {
               width: 3%;
@@ -450,8 +456,8 @@ export default {
               width: 20%;
 
               button {
-                margin-right: 5px;
-                padding: 5px;
+                margin-right: (5vw / $vw);
+                padding: (5vw / $vw);
                 color: white;
 
                 &:nth-child(1) {
@@ -492,18 +498,18 @@ export default {
     .pagination {
       display: flex;
       align-items: center;
-      margin-top: 10px;
+      margin-top: (10vw / $vw);
 
       span {
-        margin-right: 10px;
+        margin-right: (10vw / $vw);
 
         select {
-          border: 1px solid #ccc;
-          padding: 5px 10px;
+          border: (1vw / $vw) solid #ccc;
+          padding: (5vw / $vw) (10vw / $vw);
         }
 
         button {
-          padding: 5px 7px;
+          padding: (5vw / $vw) (7vw / $vw);
           background-color: #909399;
           color: #fff;
 
@@ -512,7 +518,7 @@ export default {
           }
 
           i {
-            font-size: 18px;
+            font-size: (18vw / $vw);
           }
         }
       }

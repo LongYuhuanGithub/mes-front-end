@@ -21,12 +21,12 @@ export default {
     return {
       colorObj: { // 颜色类型对应的样式对象
         success: {
-          border: '1px solid #e1f3d8',
+          border: '0.0520833333333333vw solid #e1f3d8',
           backgroundColor: '#f0f9eb',
           color: '#67c23a'
         },
         error: {
-          border: '1px solid #fde2e2',
+          border: '0.0520833333333333vw solid #fde2e2',
           backgroundColor: '#fef0f0',
           color: '#f56c6c'
         }
@@ -38,19 +38,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$vw: 19.2;
+
 .my-message {
   position: fixed;
   left: 50%;
   top: 3%;
   display: flex;
   align-items: center;
-  border-radius: 5px;
-  padding: 10px 20px;
+  border-radius: (5vw / $vw);
+  padding: (10vw / $vw) (20vw / $vw);
   transform: translateX(-50%);
   z-index: 999;
 
   i {
-    margin-right: 5px;
+    margin-right: (5vw / $vw);
   }
 }
 

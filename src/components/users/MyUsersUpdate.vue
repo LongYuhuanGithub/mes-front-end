@@ -128,21 +128,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$vw: 19.2;
+
 .my-users-update {
   position: absolute;
   top: 50%;
   left: 50%;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  padding: 20px;
+  border: (1vw / $vw) solid #ccc;
+  border-radius: (10vw / $vw);
+  padding: (20vw / $vw);
   width: 30%;
   background-color: white;
   transform: translate(-50%, -50%);
 
   // 标题
   .title {
-    padding: 10px;
-    font-size: 16px;
+    padding: (10vw / $vw);
+    font-size: (16vw / $vw);
   }
 
   // 内容
@@ -150,10 +152,10 @@ export default {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    padding: 10px;
+    padding: (10vw / $vw);
 
     div {
-      margin-bottom: 10px;
+      margin-bottom: (10vw / $vw);
       width: 50%;
 
       &:last-child {
@@ -178,9 +180,9 @@ export default {
         input[type="password"],
         input[type="email"],
         select {
-          border: 1px solid #ccc;
+          border: (1vw / $vw) solid #ccc;
           width: 72%;
-          height: 30px;
+          height: (30vw / $vw);
         }
 
         select {
@@ -200,8 +202,8 @@ export default {
 
     button {
       float: right;
-      width: 80px;
-      height: 35px;
+      width: (80vw / $vw);
+      height: (35vw / $vw);
       color: white;
 
       &:first-child {
@@ -213,13 +215,13 @@ export default {
       }
 
       &:last-child {
-        border: 1px solid #dcdfe6;
-        margin-right: 10px;
+        border: (1vw / $vw) solid #dcdfe6;
+        margin-right: (10vw / $vw);
         background-color: #fff;
         color: #000;
 
         &:hover {
-          border: 1px solid #c6e2ff;
+          border: (1vw / $vw) solid #c6e2ff;
           background-color: #ecf5ff;
           color: #4ea5ff;
         }

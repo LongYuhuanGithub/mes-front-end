@@ -1,3 +1,5 @@
+$vw: 19.2;
+
 // 清除内外边距并设置怪异的盒子模型
 * {
   margin: 0;
@@ -8,7 +10,7 @@
 body {
   background-color: #fff;
   color: #555;
-  font: 14px/1.5 Consolas, SimHei, sans-serif; // 字体大小 16px 行高 1.5 倍
+  font: (14vw / $vw)/1.5 Consolas, SimHei, sans-serif; // 字体大小 14vw 行高 1.5 倍
   -webkit-font-smoothing: antialiased; // CSS3 抗锯齿形，让文字显示的更加清晰
 }
 
@@ -47,8 +49,8 @@ select,
 textarea,
 button {
   border: none;
-  border-radius: 5px;
-  padding: 10px;
+  border-radius: (5vw / $vw);
+  padding: (10vw / $vw);
   outline: none;
   transition: all .3s;
 }
@@ -65,13 +67,13 @@ textarea {
 
   // 获得焦点后的样式
   &:focus {
-    box-shadow: 0 0 5px 5px rgba(34, 199, 141, .6);
+    box-shadow: 0 0 (5vw / $vw) (5vw / $vw) rgba(34, 199, 141, .6);
   }
 }
 
 // 选择框获得焦点后的样式
 select:focus {
-  box-shadow: 0 0 5px 5px rgba(34, 199, 141, .6);
+  box-shadow: 0 0 (5vw / $vw) (5vw / $vw) rgba(34, 199, 141, .6);
 }
 
 // 鼠标经过 button 按钮时，鼠标变成小手
@@ -114,8 +116,8 @@ button {
 
   // 滚动条整体样式
   &::-webkit-scrollbar {
-    width: 10px;
-    height: 1px;
+    width: (10vw / $vw);
+    height: (1vw / $vw);
   }
 
   // 滚动条里面小方块

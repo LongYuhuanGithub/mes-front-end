@@ -57,6 +57,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$vw: 19.2;
+
 .my-aside {
   height: 100%;
 
@@ -67,15 +69,15 @@ export default {
 
     li {
       width: 100%;
-      min-height: 40px;
-      line-height: 40px;
-      text-indent: 15px;
+      min-height: (40vw / $vw);
+      line-height: (40vw / $vw);
+      text-indent: (15vw / $vw);
       cursor: pointer;
 
       .arrows {
         float: right;
-        margin-right: 10px;
-        transform-origin: 24px center;
+        margin-right: (10vw / $vw);
+        transform-origin: (24vw / $vw) center;
         transition: all .3s;
 
         &.down {
@@ -96,7 +98,7 @@ export default {
         }
 
         li {
-          text-indent: 30px;
+          text-indent: (30vw / $vw);
           cursor: pointer;
 
           &.current {
@@ -112,7 +114,7 @@ export default {
   }
 
   .iconfont {
-    margin-right: 5px;
+    margin-right: (5vw / $vw);
   }
 }
 </style>

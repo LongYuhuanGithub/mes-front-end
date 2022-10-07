@@ -63,6 +63,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$vw: 19.2;
+
 .home-view {
   height: 100%;
 
@@ -71,13 +73,13 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 10px;
-    height: 60px;
+    padding: 0 (10vw / $vw);
+    height: (60vw / $vw);
     background-color: #323844;
     color: #eee;
 
     img {
-      height: 60px;
+      height: (60vw / $vw);
     }
 
     button {
@@ -91,15 +93,15 @@ export default {
 
   section {
     display: flex;
-    margin-top: -60px;
-    padding-top: 60px;
+    margin-top: (-60vw / $vw);
+    padding-top: (60vw / $vw);
     height: 100%;
 
     // 主体内容
     main {
       flex: 1;
       position: relative;
-      padding: 10px;
+      padding: (10vw / $vw);
       height: 100%;
       background-color: #ccc;
 
@@ -121,7 +123,7 @@ export default {
     // 左侧导航区域
     aside {
       order: -1;
-      width: 250px;
+      width: (250vw / $vw);
       height: 100%;
       background-color: #21252b;
       color: #abb2bf;

@@ -69,6 +69,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$vw: 19.2;
+
 .register-view {
   width: 100%;
   height: 100%;
@@ -77,37 +79,37 @@ export default {
     position: absolute;
     top: 50%;
     left: 50%;
-    border-radius: 20px;
-    padding: 40px 70px;
-    width: 400px;
-    height: 450px;
+    border-radius: (20vw / $vw);
+    padding: (40vw / $vw) (70vw / $vw);
+    width: (400vw / $vw);
+    height: (450vw / $vw);
     background-color: rgba(0, 0, 0, 0.6);
     transform: translate(-50%, -50%);
 
     .register-title {
-      margin-bottom: 20px;
+      margin-bottom: (20vw / $vw);
       text-align: center;
-      font-size: 24px;
+      font-size: (24vw / $vw);
       font-weight: 700;
       color: #eee;
     }
 
     .reg-form {
-      margin-top: 10px;
+      margin-top: (10vw / $vw);
 
       [type=text], [type=password], [type=email] {
-        margin: 10px 0;
+        margin: (10vw / $vw) 0;
       }
 
       .gender {
         display: flex;
-        margin: 10px 0;
+        margin: (10vw / $vw) 0;
         color: #eee;
 
         label {
           display: flex;
           align-items: center;
-          margin-right: 10px;
+          margin-right: (10vw / $vw);
         }
       }
 
@@ -116,7 +118,7 @@ export default {
         justify-content: space-between;
 
         button {
-          padding: 10px;
+          padding: (10vw / $vw);
           width: 46%;
           background-color: #1890FF;
           color: white;

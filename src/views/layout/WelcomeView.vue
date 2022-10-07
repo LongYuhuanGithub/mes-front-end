@@ -8,8 +8,3 @@
     </div>
   </div>
 </template>
-
-<style lang="scss" scoped>
-.users-view {
-}
-</style>

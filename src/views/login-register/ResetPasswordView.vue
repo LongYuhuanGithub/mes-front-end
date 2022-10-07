@@ -67,6 +67,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$vw: 19.2;
+
 .reset-password-view {
   width: 100%;
   height: 100%;
@@ -75,28 +77,28 @@ export default {
     position: absolute;
     top: 50%;
     left: 50%;
-    border-radius: 20px;
-    padding: 40px 70px;
-    width: 400px;
-    height: 420px;
+    border-radius: (20vw / $vw);
+    padding: (40vw / $vw) (70vw / $vw);
+    width: (400vw / $vw);
+    height: (420vw / $vw);
     background-color: rgba(0, 0, 0, 0.6);
     transform: translate(-50%, -50%);
 
     .forgetpwd-title {
-      margin-bottom: 20px;
+      margin-bottom: (20vw / $vw);
       color: #eee;
       text-align: center;
-      font-size: 24px;
+      font-size: (24vw / $vw);
       font-weight: 700;
     }
 
     .form {
-      margin-top: 10px;
+      margin-top: (10vw / $vw);
       text-align: center;
 
       div {
         input {
-          margin: 10px 0;
+          margin: (10vw / $vw) 0;
         }
       }
 
@@ -120,7 +122,7 @@ export default {
       }
 
       button {
-        margin: 10px 0;
+        margin: (10vw / $vw) 0;
         width: 46%;
         background-color: #1890FF;
         color: white;
